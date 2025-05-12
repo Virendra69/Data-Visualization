@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scatter Plot</title>
+  </head>
+  <body>
+    <form
+      action="{% url 'scatterPlot' %}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <label for="X">X-axis</label>
+      <select class="features" name="X" id="X">
+        <option disabled selected value="">Select X</option>
+        <option value="intensity">Intensity</option>
+        <option value="relevance">Relevance</option>
+        <option value="likelihood">Likelihood</option>
+      </select>
+      <label for="Y">Y-axis</label>
+      <select class="features" name="Y" id="Y">
+        <option disabled selected value="">Select Y</option>
+        <option value="intensity">Intensity</option>
+        <option value="relevance">Relevance</option>
+        <option value="likelihood">Likelihood</option>
+      </select>
+      <button disabled id="submit">Submit</button>
+    </form>
+    {% if scatter_plot %} {{ scatter_plot|safe }} {% endif %}
+    <script>
+      const features = document.querySelectorAll(".features");
+      const submitButton = document.getElementById("submit");
+
+      // Function to check if all dropdowns have a selected option
+      function checkDropdowns() {
+        let allSelected = true;
+        features.forEach((feature) => {
+          if (feature.value === "") {
+            allSelected = false;
+          }
+        });
+        submitButton.disabled = !allSelected;
+      }
+
+      // Add change event listeners to each dropdown
+      features.forEach((feature) => {
+        feature.addEventListener("change", checkDropdowns);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Histogram</title>
+  </head>
+  <body>
+    <form
+      action="{% url 'histogramPlot' %}"
+      method="POST"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <label for="column">Column</label>
+      <select name="column" id="column">
+        <option disabled selected>Select column</option>
+        <option value="topic">Topic</option>
+        <option value="sector">Sector</option>
+        <option value="region">Region</option>
+        <option value="source">Source</option>
+      </select>
+      <button disabled id="submit">Submit</button>
+    </form>
+    {% if histogram %} {{ histogram|safe}} {% endif %}
+    <script>
+      var submitBtn = document.getElementById("submit");
+      var column = document.getElementById("column");
+
+      column.addEventListener("change", () => {
+        submitBtn.disabled = false;
+      });
+    </script>
+  </body>
+</html>
